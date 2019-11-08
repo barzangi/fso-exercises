@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Course from './components/Course';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Course from './components/Course'
 
 const App = () => {
   const courses = [
@@ -46,13 +46,13 @@ const App = () => {
         }
       ]
     }
-  ];
+  ]
 
   return (
     <>
       {courses.map(course => <Course key={course.id} course={course} />)}
     </>
-  );
+  )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'))

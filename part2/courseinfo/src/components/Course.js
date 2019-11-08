@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Course = ({ course }) => {
   return (
@@ -7,7 +7,7 @@ const Course = ({ course }) => {
       <Content parts={course.parts} />
       <Total parts={course.parts} />
     </>
-  );
+  )
 }
 
 const Header = ({ name }) => {
@@ -15,7 +15,7 @@ const Header = ({ name }) => {
     <>
       <h1>{name}</h1>
     </>
-  );
+  )
 }
 
 const Content = ({ parts }) => {
@@ -23,7 +23,7 @@ const Content = ({ parts }) => {
     <>
       {parts.map(part => <p key={part.id}>{part.name} {part.exercises}</p>)}
     </>
-  );
+  )
 }
 
 const Total = ({ parts }) => {
@@ -31,7 +31,7 @@ const Total = ({ parts }) => {
     <>
       <p><strong>Total of {parts.reduce((total, part) => total + part.exercises, 0)} exercises</strong></p>
     </>
-  );
+  )
 }
 
-export default Course;
+export default Course

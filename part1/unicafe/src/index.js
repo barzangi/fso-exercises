@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 
 const Header = ({text}) => <h1>{text}</h1>
 
@@ -9,9 +9,9 @@ const Statistic = ({ text, value }) => <tr><td>{text}</td><td>{value}</td></tr>
 
 const Statistics = (props) => {
   if (!props.good && !props.neutral && !props.bad) return <div>no feedback given</div>;
-  const all = props.good + props.neutral + props.bad;
-  const average = ((props.good + -props.bad) / (props.good + props.neutral + props.bad)).toFixed(1);
-  const positive = (props.good * 100 / (props.good + props.neutral + props.bad)).toFixed(1) + ' %';
+  const all = props.good + props.neutral + props.bad
+  const average = ((props.good + -props.bad) / (props.good + props.neutral + props.bad)).toFixed(1)
+  const positive = (props.good * 100 / (props.good + props.neutral + props.bad)).toFixed(1) + ' %'
   return (
     <table>
       <tbody>
@@ -23,14 +23,14 @@ const Statistics = (props) => {
         <Statistic text='positive' value={positive} />
       </tbody>
     </table>
-  );
+  )
 }
 
 const App = () => {
   // save clicks of each button to own state
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
 
   return (
     <>
@@ -41,7 +41,7 @@ const App = () => {
       <Header text='statistics' />
       <Statistics good={good} neutral={neutral} bad={bad} />
     </>
-  );
+  )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'))

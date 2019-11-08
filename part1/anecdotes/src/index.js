@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 
 const App = (props) => {
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(0)
   const [votes, updateVotes] = useState(() => {
     // initialize votes array with zero values
-    let votesInit = new Array(anecdotes.length).fill(0);
-    return votesInit;
+    let votesInit = new Array(anecdotes.length).fill(0)
+    return votesInit
   });
 
   // return random index for anecdotes array
-  const randomIndex = () => Math.floor(Math.random() * props.anecdotes.length);
+  const randomIndex = () => Math.floor(Math.random() * props.anecdotes.length)
 
   // update votes array
   const addVote = (currentSelected) => {
-    const votesCopy = [...votes];
-    votesCopy[currentSelected] += 1;
-    updateVotes(votesCopy);
+    const votesCopy = [...votes]
+    votesCopy[currentSelected] += 1
+    updateVotes(votesCopy)
   }
 
   // find index of top voted anecdote
@@ -26,11 +26,11 @@ const App = (props) => {
     let maxIndex = 0
     for (let i = 0; i < votes.length; i++) {
       if (votes[i] > max) {
-        maxIndex = i;
-        max = votes[i];
+        maxIndex = i
+        max = votes[i]
       }
     }
-    return maxIndex;
+    return maxIndex
   }
 
   return (
@@ -44,7 +44,7 @@ const App = (props) => {
       <div>{props.anecdotes[findTopAnecdote()]}</div>
       <div>has {votes[findTopAnecdote()]} votes</div>
     </>
-  );
+  )
 }
 
 const anecdotes = [
@@ -54,6 +54,6 @@ const anecdotes = [
   'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-];
+]
 
-ReactDOM.render(<App anecdotes={anecdotes} />, document.getElementById('root'));
+ReactDOM.render(<App anecdotes={anecdotes} />, document.getElementById('root'))

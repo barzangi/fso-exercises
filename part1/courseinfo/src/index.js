@@ -1,12 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 const Header = (props) => {
   return (
     <>
       <h1>{props.course}</h1>
     </>
-  );
+  )
 }
 
 const Content = (props) => {
@@ -16,7 +16,7 @@ const Content = (props) => {
       <Part name={props.parts[1].name} exercises={props.parts[1].exercises} />
       <Part name={props.parts[2].name} exercises={props.parts[2].exercises} />
     </>
-  );
+  )
 }
 
 const Part = (props) => {
@@ -24,7 +24,7 @@ const Part = (props) => {
     <>
       <p>{props.name} {props.exercises}</p>
     </>
-  );
+  )
 }
 
 const Total = (props) => {
@@ -32,7 +32,7 @@ const Total = (props) => {
     <>
       <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
     </>
-  );
+  )
 }
 
 const App = () => {
@@ -59,7 +59,7 @@ const App = () => {
       <Content parts={course.parts} />
       <Total parts={course.parts} />
     </>
-  );
+  )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'))

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const PersonForm = (props) => {
   return (
@@ -13,7 +13,7 @@ const PersonForm = (props) => {
         <button type="submit">add</button>
       </div>
     </form>
-  );
+  )
 }
 
-export default PersonForm;
+export default PersonForm

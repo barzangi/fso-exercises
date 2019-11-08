@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const CountryList = ({ country, handlerFunction }) => {
   const countryObject = {
@@ -6,7 +6,7 @@ const CountryList = ({ country, handlerFunction }) => {
       value: country.name
     }
   }
-  return <div>{country.name} <button onClick={() => handlerFunction(countryObject)}>show</button></div>;
+  return <div>{country.name} <button onClick={() => handlerFunction(countryObject)}>show</button></div>
 }
 
-export default CountryList;
+export default CountryList

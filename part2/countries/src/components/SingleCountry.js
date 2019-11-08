@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const SingleCountry = ({ country }) => {
   return (
@@ -12,7 +12,7 @@ const SingleCountry = ({ country }) => {
       </ul>
       <img src={country.flag} alt={country.name} width='150px'></img>
     </>
-  );
+  )
 }
 
-export default SingleCountry;
+export default SingleCountry

@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
 const Notification = ({ message, messageType }) => {
   if (message === null) {
-    return null;
+    return null
   }
 
   const notificationStyle = {}
   if (messageType) {
-    notificationStyle.color = 'green';
+    notificationStyle.color = 'green'
   } else {
-    notificationStyle.color = 'red';
+    notificationStyle.color = 'red'
   }
 
   return (
@@ -19,4 +19,4 @@ const Notification = ({ message, messageType }) => {
   )
 }
 
-export default Notification;
+export default Notification
