@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "How you react when your systems fail may define your business",
+  "author": "Ron Miller",
+  "url": "https://techcrunch.com/2019/10/31/how-you-react-when-your-systems-fail-may-define-your-business/",
+  "likes": 7,
+  "userId": "5dd8c4d3d9ab2942c7aa702c"
+}

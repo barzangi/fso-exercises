@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Wikipedia references now include book previews hosted by the Internet Archive",
+  "author": "Georgina Torbet",
+  "url": "https://www.engadget.com/2019/11/04/wikipedia-references-internet-archive/",
+  "likes": 15
+}

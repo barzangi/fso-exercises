@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZGQ4YzRkM2Q5YWIyOTQyYzdhYTcwMmMiLCJpYXQiOjE1NzUwMTA4ODF9.ow9H6l-xYS2mSv-hsrcuqPTvfk_qfH51lvXbC_TM1bs
+
+{
+  "title": "Canonical string reduction",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+  "likes": 12
+}
