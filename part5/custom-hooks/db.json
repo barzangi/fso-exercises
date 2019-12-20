@@ -1,0 +1,40 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are awesome!",
+      "id": 1
+    },
+    {
+      "content": "best feature ever <3",
+      "id": 2
+    },
+    {
+      "content": "react rules!",
+      "id": 3
+    },
+    {
+      "id": 4
+    },
+    {
+      "content": "using bind to clear fields",
+      "id": 5
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "ahellas",
+      "number": "050-1432654",
+      "id": 2
+    },
+    {
+      "name": "lbarzangi",
+      "number": "011-9779545",
+      "id": 3
+    }
+  ]
+}
