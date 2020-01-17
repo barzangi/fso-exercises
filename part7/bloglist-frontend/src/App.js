@@ -7,6 +7,7 @@ import loginService from './services/login'
 import Togglable from './components/Togglable'
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs, addLike } from './reducers/blogReducer'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
@@ -21,15 +22,9 @@ const App = (props) => {
   const { value:username, bind:bindUsername, reset:resetUsername } = useField('text')
   const { value:password, bind:bindPassword, reset:resetPassword } = useField('password')
   const [user, setUser] = useState(null)
-  // const [notificationMessage, setNotificationMessage] = useState(null)
-  // const [messageType, setMessageType] = useState(true)
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then(initialBlogs => {
-        setBlogs(initialBlogs.sort((a, b) => b.likes - a.likes))
-      })
+    props.initializeBlogs()
   }, [])
 
   useEffect(() => {
@@ -39,16 +34,6 @@ const App = (props) => {
       setUser(user)
     }
   }, [])
-
-  const rows = () => blogs.map(blog =>
-    <Blog
-      key={blog.id}
-      blog={blog}
-      addLike={() => addLike(blog.id)}
-      destroyBlog={() => destroyBlog(blog)}
-      loggedInUser={user}
-    />
-  )
 
   const addBlog = (event) => {
     event.preventDefault()
@@ -92,6 +77,7 @@ const App = (props) => {
     // setNewUrl('')
   }
 
+  /*
   const addLike = id => {
     const blog = blogs.find(b => b.id === id)
     const changedBlog = { ...blog, likes: blog.likes + 1 }
@@ -101,6 +87,11 @@ const App = (props) => {
       .then(() => {
         setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog).sort((a, b) => b.likes - a.likes))
       })
+  }
+  */
+
+  const like = (blog) => {
+    props.addLike(blog)
   }
 
   const destroyBlog = blog => {
@@ -193,26 +184,24 @@ const App = (props) => {
     </form>
   )
 
-  /*
-  const Notification = ({ message, messageType }) => {
-    if (message === null) {
-      return null
-    }
-
-    const notificationStyle = {}
-    messageType ? notificationStyle.color = 'green' : notificationStyle.color = 'red'
-
+  const BlogList = () => {
     return (
-      <div className='notification' style={notificationStyle}>
-        {message}
-      </div>
+      <>
+        {props.blogs.map(blog =>
+          <Blog
+            key={blog.id}
+            blog={blog}
+            addLike={() => like(blog)}
+            destroyBlog={() => destroyBlog(blog)}
+            loggedInUser={user}
+          />
+        )}
+      </>
     )
   }
-  */
 
   return (
     <>
-      {/*<Notification message={notificationMessage} messageType={messageType} />*/}
       <Notification />
       {user === null ?
         <div>
@@ -226,11 +215,24 @@ const App = (props) => {
             <h1>Create new</h1>
             {blogForm()}
           </Togglable>
-          {rows()}
+          {/*{rows()}*/}
+          <BlogList />
         </div>
       }
     </>
   )
 }
 
-export default connect(null, { setNotification })(App)
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs
+  }
+}
+
+const mapDispatchToProps = {
+  setNotification,
+  initializeBlogs,
+  addLike
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
