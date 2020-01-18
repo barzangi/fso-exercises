@@ -4,6 +4,8 @@ const blogReducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_BLOGS':
       return action.data.sort((a, b) => b.likes - a.likes)
+    case 'NEW_BLOG':
+      return [...state, action.data]
     case 'LIKE': {
       const id = action.data.id
       const blogToChange = state.find(b => b.id === id)
@@ -14,6 +16,10 @@ const blogReducer = (state = [], action) => {
       return state
         .map(b => b.id !== id ? b : changedBlog)
         .sort((a, b) => b.likes - a.likes)
+    }
+    case 'DESTROY_BLOG': {
+      const id = action.data.id
+      return state.filter(b => b.id !== id)
     }
     default:
       return state
@@ -30,6 +36,24 @@ export const initializeBlogs = () => {
   }
 }
 
+export const createBlog = (blog, loggedInUser) => {
+  return async dispatch => {
+    let newBlog = await blogService.create(blog)
+    newBlog = {
+      ...newBlog,
+      user: {
+        username: loggedInUser.username,
+        name: loggedInUser.name,
+        id: newBlog.user
+      }
+    }
+    dispatch({
+      type: 'NEW_BLOG',
+      data: newBlog
+    })
+  }
+}
+
 export const addLike = (blog) => {
   return async dispatch => {
     const object = { ...blog, likes: blog.likes + 1 }
@@ -37,6 +61,16 @@ export const addLike = (blog) => {
     dispatch({
       type: 'LIKE',
       data: { id: blog.id }
+    })
+  }
+}
+
+export const destroyBlog = id => {
+  return async dispatch => {
+    await blogService.destroy(id)
+    dispatch({
+      type: 'DESTROY_BLOG',
+      data: { id: id }
     })
   }
 }

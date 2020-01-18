@@ -7,7 +7,7 @@ import loginService from './services/login'
 import Togglable from './components/Togglable'
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, addLike } from './reducers/blogReducer'
+import { initializeBlogs, createBlog, addLike, destroyBlog } from './reducers/blogReducer'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
@@ -30,14 +30,22 @@ const App = (props) => {
     }
   }, [])
 
-  const addBlog = (event) => {
+  const addBlog = async (event) => {
     event.preventDefault()
     const blogObject = {
       title: newTitle,
       author: newAuthor,
       url: newUrl
     }
+    try {
+      const newBlog = await props.createBlog(blogObject, user)
+      setBlogs(blogs.concat(newBlog))
+      props.setNotification(`New blog "${newTitle}" by ${newAuthor} added`, true, 5)
+    } catch (error) {
+      props.setNotification(error.response.data.error, false, 5)
+    }
 
+    /*
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -55,6 +63,8 @@ const App = (props) => {
       .catch(error => {
         props.setNotification(error.response.data.error, false, 5)
       })
+    */
+
     resetNewTitle()
     resetNewAuthor()
     resetNewUrl()
@@ -64,9 +74,18 @@ const App = (props) => {
     props.addLike(blog)
   }
 
-  const destroyBlog = blog => {
+  const destroyBlog = async (blog) => {
     const destroyConfirm = window.confirm(`Remove blog post "${blog.title}" by ${blog.author}?`)
     if (destroyConfirm) {
+      try {
+        await props.destroyBlog(blog.id)
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+        props.setNotification(`Removed blog post "${blog.title}" by ${blog.author}`, true, 5)
+      } catch (error) {
+        props.setNotification(error.response.data.error, false, 5)
+      }
+
+      /*
       blogService
         .destroy(blog.id)
         .then(() => {
@@ -76,6 +95,7 @@ const App = (props) => {
         .catch(error => {
           props.setNotification(error.response.data.error, false, 5)
         })
+      */
     }
   }
 
@@ -183,7 +203,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setNotification,
   initializeBlogs,
-  addLike
+  createBlog,
+  addLike,
+  destroyBlog
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
