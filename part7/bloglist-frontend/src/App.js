@@ -11,11 +11,6 @@ import { initializeBlogs, addLike } from './reducers/blogReducer'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
-  // const [username, setUsername] = useState('')
-  // const [password, setPassword] = useState('')
-  // const [newTitle, setNewTitle] = useState('')
-  // const [newAuthor, setNewAuthor] = useState('')
-  // const [newUrl, setNewUrl] = useState('')
   const { value:newTitle, bind:bindNewTitle, reset:resetNewTitle } = useField('text')
   const { value:newAuthor, bind:bindNewAuthor, reset:resetNewAuthor } = useField('text')
   const { value:newUrl, bind:bindNewUrl, reset:resetNewUrl } = useField('text')
@@ -56,39 +51,14 @@ const App = (props) => {
         }
         setBlogs(blogs.concat(returnedBlog))
         props.setNotification(`New blog "${newTitle}" by ${newAuthor} added`, true, 5)
-        // setNotificationMessage(`New blog "${newTitle}" by ${newAuthor} added`)
-        // setMessageType(true)
       })
       .catch(error => {
         props.setNotification(error.response.data.error, false, 5)
-        // setNotificationMessage(error.response.data.error)
-        // setMessageType(false)
       })
-      /*
-      setTimeout(() => {
-      setNotificationMessage(null)
-    }, 5000)
-    */
     resetNewTitle()
     resetNewAuthor()
     resetNewUrl()
-    // setNewTitle('')
-    // setNewAuthor('')
-    // setNewUrl('')
   }
-
-  /*
-  const addLike = id => {
-    const blog = blogs.find(b => b.id === id)
-    const changedBlog = { ...blog, likes: blog.likes + 1 }
-
-    blogService
-      .update(id, changedBlog)
-      .then(() => {
-        setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog).sort((a, b) => b.likes - a.likes))
-      })
-  }
-  */
 
   const like = (blog) => {
     props.addLike(blog)
@@ -102,19 +72,10 @@ const App = (props) => {
         .then(() => {
           setBlogs(blogs.filter(b => b.id !== blog.id))
           props.setNotification(`Removed blog post "${blog.title}" by ${blog.author}`, true, 5)
-          // setNotificationMessage(`Removed blog post "${blog.title}" by ${blog.author}`)
-          // setMessageType(true)
         })
         .catch(error => {
           props.setNotification(error.response.data.error, false, 5)
-          // setNotificationMessage(error.response.data.error)
-          // setMessageType(false)
         })
-      /*
-      setTimeout(() => {
-        setNotificationMessage(null)
-      }, 5000)
-      */
     }
   }
 
@@ -133,17 +94,8 @@ const App = (props) => {
       setBlogs(blogs.sort((a, b) => b.likes - a.likes))
       resetUsername()
       resetPassword()
-      // setUsername('')
-      // setPassword('')
     } catch(exception) {
       props.setNotification('Wrong username or password', false, 5)
-      // setNotificationMessage('Wrong username or password')
-      // setMessageType(false)
-      /*
-      setTimeout(() => {
-        setNotificationMessage(null)
-      }, 5000)
-      */
     }
   }
 
@@ -215,7 +167,6 @@ const App = (props) => {
             <h1>Create new</h1>
             {blogForm()}
           </Togglable>
-          {/*{rows()}*/}
           <BlogList />
         </div>
       }
