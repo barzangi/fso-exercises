@@ -8,8 +8,7 @@ import { initializeAnecdotes } from './reducers/anecdoteReducer'
 
 const App = (props) => {
   useEffect(() => {
-    props.initializeAnecdotes()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    initializeAnecdotes()
   }, []) 
 
   return (
