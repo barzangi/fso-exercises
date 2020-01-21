@@ -15,7 +15,7 @@ const blogReducer = (state = [], action) => {
       }
       return state
         .map(b => b.id !== id ? b : changedBlog)
-        .sort((a, b) => b.likes - a.likes)
+        .sort((a, b) => b.likes - a.likes) // sort by likes in descending order
     }
     case 'DESTROY_BLOG': {
       const id = action.data.id
