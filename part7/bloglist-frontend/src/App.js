@@ -64,7 +64,6 @@ const Blogs = (props) => {
     }
     try {
       await props.createBlog(blogObject, props.user)
-      console.log('blogs:', props.blogs)
       props.setNotification(`New blog "${newTitle}" by ${newAuthor} added`, true, 5)
     } catch (error) {
       console.log('error:', error)
