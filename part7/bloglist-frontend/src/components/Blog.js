@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 // import PropTypes from 'prop-types'
 
-const Blog = ({ blog, addLike, destroyBlog, loggedInUser }) => {
+const Blog = ({ blog, addLike, deleteBlog, loggedInUser }) => {
   const [expandedBlog, setExpandedBlog] = useState(false)
 
   const blogStyle = {
@@ -25,7 +25,7 @@ const Blog = ({ blog, addLike, destroyBlog, loggedInUser }) => {
         <div><a href={blog.url}>{blog.url}</a></div>
         <div>{blog.likes} likes <button type='text' onClick={addLike}>like</button></div>
         <div>Added by {blog.user.name}</div>
-        <div><button type='text' onClick={destroyBlog} style={removeButtonStyle}>remove</button></div>
+        <div><button type='text' onClick={deleteBlog} style={removeButtonStyle}>remove</button></div>
       </div>
     </div>
   )
