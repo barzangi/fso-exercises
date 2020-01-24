@@ -22,7 +22,6 @@ const Header = (props) => {
 }
 
 const Blogs = (props) => {
-  const [blogs, setBlogs] = useState([])
   const { value:newTitle, bind:bindNewTitle, reset:resetNewTitle } = useField('text')
   const { value:newAuthor, bind:bindNewAuthor, reset:resetNewAuthor } = useField('text')
   const { value:newUrl, bind:bindNewUrl, reset:resetNewUrl } = useField('text')
@@ -64,10 +63,11 @@ const Blogs = (props) => {
       url: newUrl
     }
     try {
-      const newBlog = await props.createBlog(blogObject, props.user)
-      setBlogs(blogs.concat(newBlog))
+      await props.createBlog(blogObject, props.user)
+      console.log('blogs:', props.blogs)
       props.setNotification(`New blog "${newTitle}" by ${newAuthor} added`, true, 5)
     } catch (error) {
+      console.log('error:', error)
       props.setNotification('an error occured', false, 5)
     }
     resetNewTitle()
@@ -83,10 +83,7 @@ const Blogs = (props) => {
     const deleteConfirm = window.confirm(`Remove blog post "${blog.title}" by ${blog.author}?`)
     if (deleteConfirm) {
       try {
-        const idToRemove = blog.id
-        await props.destroyBlog(idToRemove)
-        console.log('blog.id:', idToRemove)
-        setBlogs(blogs.filter(b => b.id !== idToRemove))
+        await props.destroyBlog(blog.id)
         props.setNotification(`Removed blog post "${blog.title}" by ${blog.author}`, true, 5)
       } catch (error) {
         console.log('error:', error)
@@ -117,8 +114,6 @@ const Users = () => {
     }
     getUsers()
   }, [])
-
-  console.log('users:', users)
 
   if (users.length === 0) return null
 
