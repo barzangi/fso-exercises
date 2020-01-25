@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Blogs from './components/Blogs'
+import Users from './components/Users'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import usersService from './services/users'
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
@@ -19,40 +19,6 @@ const Header = (props) => {
     </>
   )
 }
-
-const Users = () => {
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-    const getUsers = async () => {
-      const users = await usersService.getAll()
-      setUsers(users)
-    }
-    getUsers()
-  }, [])
-
-  if (users.length === 0) return null
-
-  return (
-    <>
-      <h1>Users</h1>
-      <table>
-        <thead>
-          <tr><th /><th><strong>blogs created</strong></th></tr>
-        </thead>
-        <tbody>
-          {users.map(user =>
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.blogs.length}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </>
-  )
-}
-
 const App = (props) => {
   const { value:username, bind:bindUsername, reset:resetUsername } = useField('text')
   const { value:password, bind:bindPassword, reset:resetPassword } = useField('password')
@@ -139,17 +105,6 @@ const mapStateToProps = (state) => {
     user: state.user
   }
 }
-
-/*
-const mapDispatchToProps = {
-  setNotification,
-  initializeBlogs,
-  createBlog,
-  addLike,
-  destroyBlog,
-  setUser
-}
-*/
 
 const mapDispatchToProps = {
   setNotification,
