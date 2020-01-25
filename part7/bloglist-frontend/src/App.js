@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Blog from './components/Blog'
+import Blogs from './components/Blogs'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import usersService from './services/users'
-import Togglable from './components/Togglable'
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, createBlog, addLike, destroyBlog } from './reducers/blogReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
 
 const Header = (props) => {
@@ -19,88 +18,6 @@ const Header = (props) => {
       <p>{props.user.name} is logged in <button onClick={props.handleLogout}>logout</button></p>
     </>
   )
-}
-
-const Blogs = (props) => {
-  const { value:newTitle, bind:bindNewTitle, reset:resetNewTitle } = useField('text')
-  const { value:newAuthor, bind:bindNewAuthor, reset:resetNewAuthor } = useField('text')
-  const { value:newUrl, bind:bindNewUrl, reset:resetNewUrl } = useField('text')
-
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>
-        title
-        <input {...bindNewTitle} />
-      </div>
-      <div>
-        author
-        <input {...bindNewAuthor} />
-      </div>
-      <div>
-        url
-        <input {...bindNewUrl} />
-      </div>
-      <button type='submit'>create</button>
-    </form>
-  )
-
-  const blogList = () =>
-    props.blogs.map(blog =>
-      <Blog
-        key={blog.id}
-        blog={blog}
-        addLike={() => like(blog)}
-        deleteBlog={() => deleteBlog(blog)}
-        loggedInUser={props.user}
-      />
-    )
-
-  const addBlog = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl
-    }
-    try {
-      await props.createBlog(blogObject, props.user)
-      props.setNotification(`New blog "${newTitle}" by ${newAuthor} added`, true, 5)
-    } catch (error) {
-      console.log('error:', error)
-      props.setNotification('an error occured', false, 5)
-    }
-    resetNewTitle()
-    resetNewAuthor()
-    resetNewUrl()
-  }
-
-  const like = (blog) => {
-    props.addLike(blog)
-  }
-
-  const deleteBlog = async (blog) => {
-    const deleteConfirm = window.confirm(`Remove blog post "${blog.title}" by ${blog.author}?`)
-    if (deleteConfirm) {
-      try {
-        await props.destroyBlog(blog.id)
-        props.setNotification(`Removed blog post "${blog.title}" by ${blog.author}`, true, 5)
-      } catch (error) {
-        console.log('error:', error)
-        props.setNotification('an error occured', false, 5)
-      }
-    }
-  }
-
-  return (
-    <>
-      <Togglable buttonLabel='new blog'>
-        <h1>Create new</h1>
-        {blogForm()}
-      </Togglable>
-      {blogList()}
-    </>
-  )
-
 }
 
 const Users = () => {
@@ -168,7 +85,7 @@ const App = (props) => {
       resetUsername()
       resetPassword()
     } catch(exception) {
-      props.setNotification('Wrong username or password', false, 5)
+      props.setNotification('Wrong username or password', false, 3)
     }
   }
 
@@ -204,12 +121,7 @@ const App = (props) => {
           <Router>
             <Route exact path='/' render={() =>
               <Blogs
-                blogs={props.blogs}
                 user={props.user}
-                createBlog={props.createBlog}
-                addLike={props.addLike}
-                destroyBlog={props.destroyBlog}
-                setNotification={props.setNotification}
                 handleLogout={() => handleLogout()}
               />
             } />
@@ -228,12 +140,20 @@ const mapStateToProps = (state) => {
   }
 }
 
+/*
 const mapDispatchToProps = {
   setNotification,
   initializeBlogs,
   createBlog,
   addLike,
   destroyBlog,
+  setUser
+}
+*/
+
+const mapDispatchToProps = {
+  setNotification,
+  initializeBlogs,
   setUser
 }
 
