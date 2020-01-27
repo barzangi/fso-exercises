@@ -47,7 +47,6 @@ const App = (props) => {
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
-      //blogService.setToken(user.token)
       props.setUser(user)
       resetUsername()
       resetPassword()
