@@ -32,6 +32,7 @@ const App = (props) => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      blogService.setToken(user.token)
       props.setUser(user)
     }
     // eslint-disable-next-line
@@ -46,7 +47,7 @@ const App = (props) => {
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
-      blogService.setToken(user.token)
+      //blogService.setToken(user.token)
       props.setUser(user)
       resetUsername()
       resetPassword()
