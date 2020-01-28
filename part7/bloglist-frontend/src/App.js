@@ -3,12 +3,14 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
+import User from './components/User'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
 
 const Header = (props) => {
@@ -19,12 +21,18 @@ const Header = (props) => {
     </>
   )
 }
+
 const App = (props) => {
   const { value:username, bind:bindUsername, reset:resetUsername } = useField('text')
   const { value:password, bind:bindPassword, reset:resetPassword } = useField('password')
 
   useEffect(() => {
     props.initializeBlogs()
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    props.initializeUsers()
     // eslint-disable-next-line
   }, [])
 
@@ -74,6 +82,11 @@ const App = (props) => {
     </form>
   )
 
+  const userById = (id) => {
+    return props.users.find(u => u.id === id)
+  }
+
+
   return (
     <>
       <Notification />
@@ -92,6 +105,9 @@ const App = (props) => {
               />
             } />
             <Route exact path='/users' render={() => <Users />} />
+            <Route exact path='/users/:id' render={({ match }) =>
+              <User user={userById(match.params.id)} />}
+            />
           </Router>
         </div>
       }
@@ -102,13 +118,15 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
-    user: state.user
+    user: state.user,
+    users: state.users
   }
 }
 
 const mapDispatchToProps = {
   setNotification,
   initializeBlogs,
+  initializeUsers,
   setUser
 }
 
