@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import usersService from '../services/users'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { initializeUsers } from '../reducers/usersReducer'
 
-const Users = () => {
-  const [users, setUsers] = useState([])
+const Users = (props) => {
 
   useEffect(() => {
-    const getUsers = async () => {
-      const users = await usersService.getAll()
-      setUsers(users)
-    }
-    getUsers()
+    props.initializeUsers()
+    // eslint-disable-next-line
   }, [])
 
-  if (users.length === 0) return null
+  if (props.users.length === 0) return null
 
   return (
     <>
@@ -22,9 +19,9 @@ const Users = () => {
           <tr><th /><th><strong>blogs created</strong></th></tr>
         </thead>
         <tbody>
-          {users.map(user =>
+          {props.users.map(user =>
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td><a href={`http://localhost:3000/users/${user.id}`}>{user.name}</a></td>
               <td>{user.blogs.length}</td>
             </tr>
           )}
@@ -34,4 +31,14 @@ const Users = () => {
   )
 }
 
-export default Users
+const mapStateToProps = (state) => {
+  return {
+    users: state.users
+  }
+}
+
+const mapDispatchToProps = {
+  initializeUsers
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users)
