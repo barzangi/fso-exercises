@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
@@ -14,11 +14,33 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
 
+/*
 const Header = (props) => {
   return (
     <>
       <h1>Blogs</h1>
       <p>{props.user.name} is logged in <button onClick={props.handleLogout}>logout</button></p>
+    </>
+  )
+}
+*/
+
+const Menu = (props) => {
+  const padding = {
+    padding: 5
+  }
+  const menuContainer = {
+    marginBottom: 10,
+    padding: 5,
+    backgroundColor: '#d9d9d9'
+  }
+  return (
+    <>
+      <div style={menuContainer}>
+        <Link style={padding} to='/'>blogs</Link>
+        <Link style={padding} to='/users'>users</Link>
+        <span style={padding}>{props.user.name} is logged in <button onClick={props.handleLogout}>logout</button></span>
+      </div>
     </>
   )
 }
@@ -101,8 +123,11 @@ const App = (props) => {
           {loginForm()}
         </div> :
         <div>
-          <Header user={props.user} handleLogout={() => handleLogout()} />
+          {/*<Header user={props.user} handleLogout={() => handleLogout()} />*/}
           <Router>
+            <div>
+              <Menu user={props.user} handleLogout={() => handleLogout()} />
+            </div>
             <Route exact path='/' render={() =>
               <Blogs
                 user={props.user}
