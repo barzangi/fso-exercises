@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
+import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -86,6 +87,10 @@ const App = (props) => {
     return props.users.find(u => u.id === id)
   }
 
+  const blogById = (id) => {
+    return props.blogs.find(b => b.id === id)
+  }
+
 
   return (
     <>
@@ -107,6 +112,9 @@ const App = (props) => {
             <Route exact path='/users' render={() => <Users />} />
             <Route exact path='/users/:id' render={({ match }) =>
               <User user={userById(match.params.id)} />}
+            />
+            <Route exact path='/blogs/:id' render={({ match }) =>
+              <Blog blog={blogById(match.params.id)} />}
             />
           </Router>
         </div>

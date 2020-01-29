@@ -1,10 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Blog from './Blog'
 import Togglable from './Togglable'
 import { useField } from '../hooks'
 import { setNotification } from '../reducers/notificationReducer'
-import { createBlog, addLike, destroyBlog } from '../reducers/blogReducer'
+import { createBlog } from '../reducers/blogReducer'
 
 const Blogs = (props) => {
   const { value:newTitle, bind:bindNewTitle, reset:resetNewTitle } = useField('text')
@@ -29,15 +28,20 @@ const Blogs = (props) => {
     </form>
   )
 
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 5,
+    paddingBottom: 10,
+    border: 'solid',
+    borderWidth: 1,
+    marginTop: 5
+  }
+
   const blogList = () =>
     props.blogs.map(blog =>
-      <Blog
-        key={blog.id}
-        blog={blog}
-        addLike={() => like(blog)}
-        deleteBlog={() => deleteBlog(blog)}
-        loggedInUser={props.user}
-      />
+      <div style={blogStyle} key={blog.id}>
+        <a href={`http://localhost:3000/blogs/${blog.id}`}>{blog.title}</a>
+      </div>
     )
 
   const addBlog = async (event) => {
@@ -57,23 +61,6 @@ const Blogs = (props) => {
     resetNewTitle()
     resetNewAuthor()
     resetNewUrl()
-  }
-
-  const like = (blog) => {
-    props.addLike(blog)
-  }
-
-  const deleteBlog = async (blog) => {
-    const deleteConfirm = window.confirm(`Remove blog post "${blog.title}" by ${blog.author}?`)
-    if (deleteConfirm) {
-      try {
-        await props.destroyBlog(blog.id)
-        props.setNotification(`Removed blog post "${blog.title}" by ${blog.author}`, true, 3)
-      } catch (error) {
-        console.log('error:', error)
-        props.setNotification('an error occured', false, 5)
-      }
-    }
   }
 
   return (
@@ -97,8 +84,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setNotification,
   createBlog,
-  addLike,
-  destroyBlog
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blogs)
