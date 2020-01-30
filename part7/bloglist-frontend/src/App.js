@@ -112,7 +112,6 @@ const App = (props) => {
           {loginForm()}
         </div> :
         <div>
-          {/*<Header user={props.user} handleLogout={() => handleLogout()} />*/}
           <Router>
             <div>
               <Menu user={props.user} handleLogout={() => handleLogout()} />
