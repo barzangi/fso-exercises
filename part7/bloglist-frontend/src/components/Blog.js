@@ -19,6 +19,7 @@ const Blog = (props) => {
     if (deleteConfirm) {
       try {
         await props.destroyBlog(blog.id)
+        props.history.push('/')
         props.setNotification(`Removed blog post "${blog.title}" by ${blog.author}`, true, 3)
       } catch (error) {
         console.log('error:', error)

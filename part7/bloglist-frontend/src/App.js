@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, withRouter } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
@@ -33,6 +33,8 @@ const Menu = (props) => {
     </>
   )
 }
+
+const SingleBlog = withRouter(Blog)
 
 const App = (props) => {
   const { value:username, bind:bindUsername, reset:resetUsername } = useField('text')
@@ -123,7 +125,7 @@ const App = (props) => {
               <User user={userById(match.params.id)} />}
             />
             <Route exact path='/blogs/:id' render={({ match }) =>
-              <Blog blog={blogById(match.params.id)} />}
+              <SingleBlog blog={blogById(match.params.id)} />}
             />
           </Router>
         </div>
