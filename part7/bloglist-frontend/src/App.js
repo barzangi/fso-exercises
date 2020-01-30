@@ -14,17 +14,6 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
 
-/*
-const Header = (props) => {
-  return (
-    <>
-      <h1>Blogs</h1>
-      <p>{props.user.name} is logged in <button onClick={props.handleLogout}>logout</button></p>
-    </>
-  )
-}
-*/
-
 const Menu = (props) => {
   const padding = {
     padding: 5
@@ -128,12 +117,8 @@ const App = (props) => {
             <div>
               <Menu user={props.user} handleLogout={() => handleLogout()} />
             </div>
-            <Route exact path='/' render={() =>
-              <Blogs
-                user={props.user}
-                handleLogout={() => handleLogout()}
-              />
-            } />
+            <h1>Blogs App</h1>
+            <Route exact path='/' render={() => <Blogs />} />
             <Route exact path='/users' render={() => <Users />} />
             <Route exact path='/users/:id' render={({ match }) =>
               <User user={userById(match.params.id)} />}
