@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Togglable from './Togglable'
 import { useField } from '../hooks'
 import { setNotification } from '../reducers/notificationReducer'
@@ -40,7 +41,7 @@ const Blogs = (props) => {
   const blogList = () =>
     props.blogs.map(blog =>
       <div style={blogStyle} key={blog.id}>
-        <a href={`http://localhost:3000/blogs/${blog.id}`}>{blog.title}</a>
+        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
       </div>
     )
 
