@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { initializeUsers } from '../reducers/usersReducer'
 
 const Users = (props) => {
+
+  useEffect(() => {
+    props.initializeUsers()
+    // eslint-disable-next-line
+  }, [])
 
   if (props.users.length === 0) return null
 
@@ -31,4 +37,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Users)
+const mapDispatchToProps = {
+  initializeUsers
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users)
