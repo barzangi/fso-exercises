@@ -25,17 +25,21 @@ const Blog = (props) => {
         props.setNotification(`Removed blog post "${blog.title}" by ${blog.author}`, true, 3)
       } catch (error) {
         console.log('error:', error)
-        props.setNotification('an error occured', false, 5)
+        props.setNotification('an error occured', false, 3)
       }
     }
   }
 
   const addComment = async (event) => {
     event.preventDefault()
-    const blog = props.blog
-    if (!blog.comments) blog.comments = []
-    props.addComment(blog, newComment)
-    resetNewComment()
+    if (newComment) {
+      const blog = props.blog
+      if (!blog.comments) blog.comments = []
+      props.addComment(blog, newComment)
+      resetNewComment()
+    } else {
+      props.setNotification('Comment cannot be empty', false, 3)
+    }
   }
 
   const commentForm = () => (
