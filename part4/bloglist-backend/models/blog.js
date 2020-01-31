@@ -6,9 +6,10 @@ const blogSchema = new mongoose.Schema({
   url: String,
   likes: Number,
   user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  comments: [String]
 })
 
 blogSchema.set('toJSON', {
