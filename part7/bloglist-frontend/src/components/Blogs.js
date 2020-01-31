@@ -1,27 +1,15 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Togglable from './Togglable'
 import { useField } from '../hooks'
 import { setNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
-import { setUser } from '../reducers/userReducer'
-import blogService from '../services/blogs'
 
 const Blogs = (props) => {
   const { value:newTitle, bind:bindNewTitle, reset:resetNewTitle } = useField('text')
   const { value:newAuthor, bind:bindNewAuthor, reset:resetNewAuthor } = useField('text')
   const { value:newUrl, bind:bindNewUrl, reset:resetNewUrl } = useField('text')
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      blogService.setToken(user.token)
-      props.setUser(user)
-    }
-    // eslint-disable-next-line
-  }, [])
 
   const blogForm = () => (
     <form onSubmit={addBlog}>
@@ -96,8 +84,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setNotification,
-  createBlog,
-  setUser
+  createBlog
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blogs)
