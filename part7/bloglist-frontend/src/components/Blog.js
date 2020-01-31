@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
-import { addLike, destroyBlog } from '../reducers/blogReducer'
+import { addLike, destroyBlog, addComment } from '../reducers/blogReducer'
+import { useField } from '../hooks'
 
 // import PropTypes from 'prop-types'
 
 const Blog = (props) => {
+  const { value:newComment, bind:bindNewComment, reset:resetNewComment } = useField('text')
   if (props.blog === undefined) return null
 
   const removeButtonStyle = { display: props.blog.user.username === props.user.username ? '' : 'none' }
@@ -28,6 +30,32 @@ const Blog = (props) => {
     }
   }
 
+  const addComment = async (event) => {
+    event.preventDefault()
+    const blog = props.blog
+    if (!blog.comments) blog.comments = []
+    props.addComment(blog, newComment)
+    resetNewComment()
+  }
+
+  const commentForm = () => (
+    <form onSubmit={addComment}>
+      <input {...bindNewComment} /> <button type='submit'>add comment</button>
+    </form>
+  )
+
+  const displayComments = (blog) => {
+    return (
+      <>
+        <ul>
+          {blog.comments.map(c =>
+            <li key={c}>{c}</li>
+          )}
+        </ul>
+      </>
+    )
+  }
+
   return (
     <>
       <h1>{props.blog.title} - {props.blog.author}</h1>
@@ -35,6 +63,9 @@ const Blog = (props) => {
       <div>{props.blog.likes} likes <button type='text' onClick={() => like(props.blog)}>like</button></div>
       <div>Added by {props.blog.user.name}</div>
       <div><button type='text' onClick={() => deleteBlog(props.blog)} style={removeButtonStyle}>remove</button></div>
+      <h2>Comments</h2>
+      {commentForm()}
+      {displayComments(props.blog)}
     </>
   )
 }
@@ -58,7 +89,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setNotification,
   addLike,
-  destroyBlog
+  destroyBlog,
+  addComment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog)
