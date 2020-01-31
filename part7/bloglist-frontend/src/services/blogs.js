@@ -33,4 +33,9 @@ const destroy = async id => {
   return response.data
 }
 
-export default { getAll, create, update, destroy, setToken }
+const addComment = async (id, newObject) => {
+  const response = await axios.put(`${baseUrl}/${id}/comments`, newObject)
+  return response.data
+}
+
+export default { getAll, create, update, destroy, addComment, setToken }
