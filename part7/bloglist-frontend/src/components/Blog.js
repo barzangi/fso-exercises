@@ -48,7 +48,7 @@ const Blog = (props) => {
     if (newComment) {
       const blog = props.blog
       if (!blog.comments) blog.comments = []
-      props.addComment(blog, newComment)
+      await props.addComment(blog, newComment)
       resetNewComment()
     } else {
       props.setNotification('Comment cannot be empty', false, 3)
