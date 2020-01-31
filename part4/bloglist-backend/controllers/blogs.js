@@ -3,11 +3,13 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
+// retreive all blog posts
 blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   res.json(blogs.map(blog => blog.toJSON()))
 })
 
+// add new blog post
 blogsRouter.post('/', async (req, res, next) => {
   const body = req.body
 
@@ -24,12 +26,13 @@ blogsRouter.post('/', async (req, res, next) => {
       author: body.author,
       url: body.url,
       likes: body.likes,
-      user: user._id
+      user: user._id,
+      comments: body.comments
     })
   
-    if (!blog.likes) {
-      blog.likes = 0
-    }
+    if (!blog.likes) blog.likes = 0
+
+    if (!blog.comments) blog.comments = []
 
     if (!blog.title || !blog.author || !blog.url) {
       return res.status(400).json({ error: 'please fill all form fields' })
@@ -45,6 +48,7 @@ blogsRouter.post('/', async (req, res, next) => {
   }
 })
 
+// remove blog post
 blogsRouter.delete('/:id', async (req, res, next) => {
   try {
     const decodedToken = jwt.verify(req.token, process.env.SECRET)
@@ -68,6 +72,7 @@ blogsRouter.delete('/:id', async (req, res, next) => {
   }
 })
 
+// like blog post
 blogsRouter.put('/:id', async (req, res, next) => {
   const body = req.body
 
@@ -76,7 +81,29 @@ blogsRouter.put('/:id', async (req, res, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: body.user.id
+    user: body.user.id,
+    comments: body.comments
+  }
+
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, { new: true })
+    res.json(updatedBlog.toJSON())
+  } catch(exception) {
+    next(exception)
+  }
+})
+
+// add comment to blog post
+blogsRouter.put('/:id/comments', async (req, res, next) => {
+  const body = req.body
+
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+    user: body.user.id,
+    comments: body.comments
   }
 
   try {
