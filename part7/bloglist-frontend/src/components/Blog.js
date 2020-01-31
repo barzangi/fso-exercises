@@ -1,13 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { addLike, destroyBlog, addComment } from '../reducers/blogReducer'
 import { useField } from '../hooks'
+import blogService from '../services/blogs'
+import { setUser } from '../reducers/userReducer'
 
 // import PropTypes from 'prop-types'
 
 const Blog = (props) => {
   const { value:newComment, bind:bindNewComment, reset:resetNewComment } = useField('text')
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      blogService.setToken(user.token)
+      props.setUser(user)
+    }
+    // eslint-disable-next-line
+  }, [])
+
   if (props.blog === undefined) return null
 
   const removeButtonStyle = { display: props.blog.user.username === props.user.username ? '' : 'none' }
@@ -94,7 +107,8 @@ const mapDispatchToProps = {
   setNotification,
   addLike,
   destroyBlog,
-  addComment
+  addComment,
+  setUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog)
