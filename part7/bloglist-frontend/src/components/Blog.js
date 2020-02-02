@@ -8,6 +8,22 @@ import { setUser } from '../reducers/userReducer'
 
 // import PropTypes from 'prop-types'
 
+// styling
+import styled from 'styled-components'
+
+const Button = styled.button`
+  background: Beige;
+  font-size: 1em;
+  margin: 0.25em;
+  padding: 0.25em, 1em;
+  border: 2px, solid, Indigo;
+  border-radius: 3px
+`
+
+const Input = styled.input`
+  margin: 0.25em;
+`
+
 const Blog = (props) => {
   const { value:newComment, bind:bindNewComment, reset:resetNewComment } = useField('text')
 
@@ -57,7 +73,7 @@ const Blog = (props) => {
 
   const commentForm = () => (
     <form onSubmit={addComment}>
-      <input {...bindNewComment} /> <button type='submit'>add comment</button>
+      <Input {...bindNewComment} /> <Button type='submit' primary=''>add comment</Button>
     </form>
   )
 
@@ -77,9 +93,9 @@ const Blog = (props) => {
     <>
       <h1>{props.blog.title} - {props.blog.author}</h1>
       <div><a href={props.blog.url}>{props.blog.url}</a></div>
-      <div>{props.blog.likes} likes <button type='text' onClick={() => like(props.blog)}>like</button></div>
+      <div>{props.blog.likes} likes <Button type='text' onClick={() => like(props.blog)}>like</Button></div>
       <div>Added by {props.blog.user.name}</div>
-      <div><button type='text' onClick={() => deleteBlog(props.blog)} style={removeButtonStyle}>remove</button></div>
+      <div><Button type='text' onClick={() => deleteBlog(props.blog)} style={removeButtonStyle}>remove</Button></div>
       <h2>Comments</h2>
       {commentForm()}
       {displayComments(props.blog)}

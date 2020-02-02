@@ -5,6 +5,23 @@ import Togglable from './Togglable'
 import { useField } from '../hooks'
 import { setNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
+import { Table } from 'semantic-ui-react'
+
+// styling
+import styled from 'styled-components'
+
+const Button = styled.button`
+  background: Beige;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em, 1em;
+  border: 2px, solid, Indigo;
+  border-radius: 3px
+`
+
+const Input = styled.input`
+  margin: 0.25em;
+`
 
 const Blogs = (props) => {
   const { value:newTitle, bind:bindNewTitle, reset:resetNewTitle } = useField('text')
@@ -14,21 +31,22 @@ const Blogs = (props) => {
   const blogForm = () => (
     <form onSubmit={addBlog}>
       <div>
-        title
-        <input {...bindNewTitle} />
+        title:
+        <Input {...bindNewTitle} />
       </div>
       <div>
-        author
-        <input {...bindNewAuthor} />
+        author:
+        <Input {...bindNewAuthor} />
       </div>
       <div>
-        url
-        <input {...bindNewUrl} />
+        url:
+        <Input {...bindNewUrl} />
       </div>
-      <button type='submit'>create</button>
+      <Button type='submit' primary=''>create</Button>
     </form>
   )
 
+  /*
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 5,
@@ -37,13 +55,31 @@ const Blogs = (props) => {
     borderWidth: 1,
     marginTop: 5
   }
+  */
 
+  /*
   const blogList = () =>
     props.blogs.map(blog =>
       <div style={blogStyle} key={blog.id}>
         <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
       </div>
     )
+  */
+
+  const blogList = () => (
+    <>
+      <Table striped celled>
+        <Table.Body>
+          {props.blogs.map(blog =>
+            <Table.Row key={blog.id}>
+              <Table.Cell>
+                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              </Table.Cell>
+            </Table.Row>)}
+        </Table.Body>
+      </Table>
+    </>
+  )
 
   const addBlog = async (event) => {
     event.preventDefault()

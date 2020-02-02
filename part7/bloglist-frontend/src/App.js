@@ -14,22 +14,52 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
 
+// styling
+import styled from 'styled-components'
+
+const Page = styled.div`
+  padding: 1em;
+  background: Beige;
+`
+
+const Navigation = styled.div`
+  background: Lightblue;
+  padding: 1em;
+`
+
+const Button = styled.button`
+  background: Beige;
+  font-size: 1em;
+  margin: 0.5em;
+  padding: 0.25em, 1em;
+  border: 2px, solid, Indigo;
+  border-radius: 3px
+`
+
+const Input = styled.input`
+  margin: 0.25em;
+`
+
 const Menu = (props) => {
   const padding = {
     padding: 5
   }
+  /*
   const menuContainer = {
     marginBottom: 10,
     padding: 5,
     backgroundColor: '#d9d9d9'
   }
+  */
   return (
     <>
-      <div style={menuContainer}>
+      {/*<div style={menuContainer}>*/}
+      <Navigation>
         <Link style={padding} to='/'>blogs</Link>
         <Link style={padding} to='/users'>users</Link>
-        <span style={padding}>{props.user.name} is logged in <button onClick={props.handleLogout}>logout</button></span>
-      </div>
+        <span style={padding}>{props.user.name} is logged in <Button onClick={props.handleLogout}>logout</Button></span>
+      </Navigation>
+      {/*</div>*/}
     </>
   )
 }
@@ -86,13 +116,13 @@ const App = (props) => {
     <form onSubmit={handleLogin}>
       <div>
         username:
-        <input {...bindUsername} />
+        <Input {...bindUsername} />
       </div>
       <div>
         password:
-        <input {...bindPassword} />
+        <Input {...bindPassword} />
       </div>
-      <button type='submit'>login</button>
+      <Button type='submit' primary=''>login</Button>
     </form>
   )
 
@@ -107,29 +137,31 @@ const App = (props) => {
 
   return (
     <>
-      <Notification />
-      {props.user === null ?
-        <div>
-          <h1>Log in to application</h1>
-          {loginForm()}
-        </div> :
-        <div>
-          <Router>
-            <div>
-              <Menu user={props.user} handleLogout={() => handleLogout()} />
-            </div>
-            <h1>Blogs App</h1>
-            <Route exact path='/' render={() => <Blogs />} />
-            <Route exact path='/users' render={() => <Users />} />
-            <Route exact path='/users/:id' render={({ match }) =>
-              <User user={userById(match.params.id)} />}
-            />
-            <Route exact path='/blogs/:id' render={({ match }) =>
-              <SingleBlog blog={blogById(match.params.id)} />}
-            />
-          </Router>
-        </div>
-      }
+      <Page>
+        <Notification />
+        {props.user === null ?
+          <div>
+            <h1>Log in to application</h1>
+            {loginForm()}
+          </div> :
+          <div>
+            <Router>
+              <div>
+                <Menu user={props.user} handleLogout={() => handleLogout()} />
+              </div>
+              <h1>Blogs App</h1>
+              <Route exact path='/' render={() => <Blogs />} />
+              <Route exact path='/users' render={() => <Users />} />
+              <Route exact path='/users/:id' render={({ match }) =>
+                <User user={userById(match.params.id)} />}
+              />
+              <Route exact path='/blogs/:id' render={({ match }) =>
+                <SingleBlog blog={blogById(match.params.id)} />}
+              />
+            </Router>
+          </div>
+        }
+      </Page>
     </>
   )
 }

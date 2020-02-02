@@ -1,5 +1,17 @@
 import React, { useState } from 'react'
 
+// styling
+import styled from 'styled-components'
+
+const Button = styled.button`
+  background: Beige;
+  font-size: 1em;
+  margin: 0.25em;
+  padding: 0.25em, 1em;
+  border: 2px, solid, Indigo;
+  border-radius: 3px
+`
+
 const Togglable = (props) => {
   const [visible, setVisible] = useState(false)
 
@@ -13,11 +25,11 @@ const Togglable = (props) => {
   return (
     <>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Button onClick={toggleVisibility}>{props.buttonLabel}</Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <Button onClick={toggleVisibility}>cancel</Button>
       </div>
     </>
   )
