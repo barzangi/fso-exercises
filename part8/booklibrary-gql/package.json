@@ -1,0 +1,19 @@
+{
+  "name": "booklibrary-gql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Layth Barzangi",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.10.0",
+    "graphql": "^14.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
