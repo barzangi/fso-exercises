@@ -7,7 +7,8 @@
 
 # testing
 /coverage
-/phonebook-gql/*
+/phonebook-gql-backend/*
+/phonebook-gql-frontend/*
 
 # production
 /build
