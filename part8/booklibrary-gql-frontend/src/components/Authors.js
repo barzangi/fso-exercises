@@ -37,6 +37,8 @@ const Authors = (props) => {
     return null
   }
 
+  const authors = result.data.allAuthors
+
   const submit = async (e) => {
     e.preventDefault()
     await editAuthor({
@@ -62,8 +64,8 @@ const Authors = (props) => {
               books
             </th>
           </tr>
-          {result.data.allAuthors.map(a =>
-            <tr key={a.name}>
+          {authors.map(a =>
+            <tr key={a.id}>
               <td style={padding}>{a.name}</td>
               <td style={padding}>{a.born}</td>
               <td style={padding}>{a.bookCount}</td>
@@ -75,10 +77,17 @@ const Authors = (props) => {
       <form onSubmit={submit}>
         <div>
             name
+            {/*
             <input
               value={name}
               onChange={({ target }) => setName(target.value)}
             />
+            */}
+            <select value={name} onChange={({ target }) => setName(target.value)}>
+              {authors.map(a =>
+                <option key={a.id} value={a.name}>{a.name}</option>
+              )}
+            </select>
         </div>
         <div>
             born
