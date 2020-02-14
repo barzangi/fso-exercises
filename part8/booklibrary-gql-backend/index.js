@@ -42,21 +42,21 @@ let books = [
     genres: ['refactoring']
   },
   {
-    title: 'Agile software development',
+    title: 'Agile Software Development',
     published: 2002,
     author: 'Robert Martin',
     id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
     genres: ['agile', 'patterns', 'design']
   },
   {
-    title: 'Refactoring, edition 2',
+    title: 'Refactoring, Edition 2',
     published: 2018,
     author: 'Martin Fowler',
     id: "afa5de00-344d-11e9-a414-719c6709cf3e",
     genres: ['refactoring']
   },
   {
-    title: 'Refactoring to patterns',
+    title: 'Refactoring to Patterns',
     published: 2008,
     author: 'Joshua Kerievsky',
     id: "afa5de01-344d-11e9-a414-719c6709cf3e",
@@ -70,7 +70,7 @@ let books = [
     genres: ['refactoring', 'design']
   },
   {
-    title: 'Crime and punishment',
+    title: 'Crime and Punishment',
     published: 1866,
     author: 'Fyodor Dostoevsky',
     id: "afa5de03-344d-11e9-a414-719c6709cf3e",
