@@ -144,21 +144,23 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
-      return Book.find({}).populate('author', { name: 1 })
-      // TODO: FIX FILTERS TO WORK WITH MONGOOSE
-      /*if (args.author) {
-        returnedBooks = returnedBooks.filter(b => b.author === args.author)
+    allBooks: async (root, args) => {
+      const getBooks = await Book.find({}).populate('author', { name: 1 })
+      if (args.author) {
+        getBooks = getBooks.filter(b => b.author.name === args.author)
       }
       if (args.genre) {
-        returnedBooks = returnedBooks.filter(b => b.genres.includes(args.genre))
-      }*/
+        getBooks = getBooks.filter(b => b.genres.includes(args.genre))
+      }
+      return getBooks
     },
     allAuthors: () => Author.find({})
   },
   Author: {
-    // TODO: FIX BOOK COUNT
-    bookCount: (root) => Book.collection.countDocuments({ "author.name": root.name })
+    bookCount: async (root) => {
+      const getBooks = await Book.find({}).populate('author', { name: 1 })
+      return getBooks.filter(b => b.author.name === root.name).length
+    }
   },
   Mutation: {
     addBook: async (root, args) => {
@@ -191,12 +193,18 @@ const resolvers = {
       return book
     },
     // TODO: FIX EDITING AUTHOR BIRTH YEAR
-    editAuthor: (root, args) => {
-      const author = authors.find(a => a.name === args.name)
-      if (!author) return null
-      const updatedAuthor = { ...author, born: args.born }
-      authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
-      return updatedAuthor
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name })
+      author.born = args.born
+
+      try {
+        await author.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
+      return author
     }
   }
 }
