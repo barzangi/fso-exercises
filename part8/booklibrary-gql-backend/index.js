@@ -177,8 +177,9 @@ const resolvers = {
               invalidArgs: args
             })
           }
-        } else {}
-        return authorExists
+        } else {
+          return authorExists
+        }
       }
 
       const getAuthor = await checkAuthorExists(args.author)
