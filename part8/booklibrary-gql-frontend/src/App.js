@@ -5,9 +5,21 @@ import NewBook from './components/NewBook'
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const handleError = (error) => {
+    setErrorMessage(error.graphQLErrors[0].message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
 
   return (
     <div>
+      {errorMessage &&
+        <div className='errorMsgStyle'>
+          {errorMessage}
+        </div>
+      }
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
@@ -24,6 +36,7 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+        handleError={handleError}
       />
 
     </div>
