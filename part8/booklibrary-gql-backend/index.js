@@ -164,6 +164,17 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
+      if (args.author.length < 4) {
+        throw new UserInputError('Author name cannot be shorter than 4 characters', {
+          invalidArgs: args
+        })
+      }
+      if (args.title.length < 2) {
+        throw new UserInputError('Book title cannot be shorter than 2 characters', {
+          invalidArgs: args
+        })
+      }
+
       const checkAuthorExists = async authorName => {
         const authorExists = await Author.findOne({ name: authorName })
         if (!authorExists) {
@@ -193,7 +204,6 @@ const resolvers = {
       }
       return book
     },
-    // TODO: FIX EDITING AUTHOR BIRTH YEAR
     editAuthor: async (root, args) => {
       const author = await Author.findOne({ name: args.name })
       author.born = args.born
