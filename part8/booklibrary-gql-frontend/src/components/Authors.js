@@ -27,12 +27,12 @@ const EDIT_AUTHOR = gql`
   }
 `
 
-const Authors = (props) => {  
-  const result = useQuery(ALL_AUTHORS)
-  const [editAuthor] = useMutation(EDIT_AUTHOR)
+const Authors = (props) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
-  if (result.loading) return <div>loading</div>
+  const result = useQuery(ALL_AUTHORS)
+  const [editAuthor] = useMutation(EDIT_AUTHOR)
+  if (result.loading) return <div>loading...</div>
   if (!props.show) {
     return null
   }
@@ -77,12 +77,6 @@ const Authors = (props) => {
       <form onSubmit={submit}>
         <div>
             name
-            {/*
-            <input
-              value={name}
-              onChange={({ target }) => setName(target.value)}
-            />
-            */}
             <select value={name} onChange={({ target }) => setName(target.value)}>
               {authors.map(a =>
                 <option key={a.id} value={a.name}>{a.name}</option>
