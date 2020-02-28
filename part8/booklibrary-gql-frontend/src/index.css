@@ -1,0 +1,10 @@
+.errorMsgStyle {
+  color: red;
+  background-color: lightgray;
+  font-size: 16px;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: red;
+  padding: 10px;
+  margin-bottom: 10px;
+}
