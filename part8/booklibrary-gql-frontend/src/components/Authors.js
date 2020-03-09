@@ -1,47 +1,18 @@
 import React, { useState } from 'react'
-import { gql } from 'apollo-boost'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-
-const ALL_AUTHORS = gql`
-{
-  allAuthors {
-    name,
-    born,
-    bookCount,
-    id
-  }
-}
-`
-
-const EDIT_AUTHOR = gql`
-  mutation editAuthor($name: String!, $born: String!) {
-    editAuthor(
-      name: $name,
-      born: $born
-    ) {
-      name
-      born
-      bookCount
-      id
-    }
-  }
-`
 
 const Authors = (props) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
-  const result = useQuery(ALL_AUTHORS)
-  const [editAuthor] = useMutation(EDIT_AUTHOR)
-  if (result.loading) return <div>loading...</div>
+  if (props.authors.loading) return <div>loading...</div>
   if (!props.show) {
     return null
   }
 
-  const authors = result.data.allAuthors
+  const authors = props.authors.data.allAuthors
 
   const submit = async (e) => {
     e.preventDefault()
-    await editAuthor({
+    await props.editAuthor({
       variables: { name, born }
     })
     setName('')
@@ -73,25 +44,31 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <h2>Set birth year</h2>
-      <form onSubmit={submit}>
-        <div>
-            name
-            <select value={name} onChange={({ target }) => setName(target.value)}>
-              {authors.map(a =>
-                <option key={a.id} value={a.name}>{a.name}</option>
-              )}
-            </select>
-        </div>
-        <div>
-            born
-            <input
-              value={born}
-              onChange={({ target }) => setBorn(target.value)}
-            />
-        </div>
-        <button type='submit'>edit author</button>
-      </form>
+      {props.token
+        ?
+          <>
+            <h2>Set birth year</h2>
+            <form onSubmit={submit}>
+              <div>
+                  name
+                  <select value={name} onChange={({ target }) => setName(target.value)}>
+                    {authors.map(a =>
+                      <option key={a.id} value={a.name}>{a.name}</option>
+                    )}
+                  </select>
+              </div>
+              <div>
+                  born
+                  <input
+                    value={born}
+                    onChange={({ target }) => setBorn(target.value)}
+                  />
+              </div>
+              <button type='submit'>edit author</button>
+            </form>
+          </>
+        : <></>
+      }
     </div>
   )
 }
