@@ -4,6 +4,7 @@ import { useApolloClient, useQuery, useMutation } from '@apollo/react-hooks'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Recommended from './components/Recommended'
 import Login from './components/Login'
 
 const ALL_AUTHORS = gql`
@@ -34,15 +35,15 @@ const EDIT_AUTHOR = gql`
 const ALL_BOOKS = gql`
 {
   allBooks {
-    title,
-    published,
+    title
+    published
     author {
-      name,
-      born,
-      bookCount,
+      name
+      born
+      bookCount
       id
-    },
-    genres,
+    }
+    genres
     id
   }
 }
@@ -81,6 +82,16 @@ const LOGIN = gql`
   }
 `
 
+const USER = gql`
+{
+  me {
+    username
+    favoriteGenre
+    id
+  }
+}
+`
+
 const App = () => {
   const [page, setPage] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
@@ -116,6 +127,8 @@ const App = () => {
 
   const books = useQuery(ALL_BOOKS)
 
+  const user = useQuery(USER)
+
   return (
     <div>
       {errorMessage &&
@@ -129,6 +142,7 @@ const App = () => {
         {token
           ? <>
               <button onClick={() => setPage('add')}>add book</button>
+              <button onClick={() => setPage('recommended')}>recommended</button>
               <button onClick={logout}>logout</button>
             </>
           : <button onClick={() => setPage('login')}>log in</button>}
@@ -150,6 +164,12 @@ const App = () => {
         show={page === 'add'}
         addBook={addBook}
         handleError={handleError}
+      />
+
+      <Recommended
+        show={page === 'recommended'}
+        books={books}
+        user={user}
       />
 
       <Login
