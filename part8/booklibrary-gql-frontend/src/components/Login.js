@@ -13,7 +13,6 @@ const Login = (props) => {
     })
     if (result) {
       const token = result.data.login.value
-      console.log('token:', token)
       props.setToken(token)
       localStorage.setItem('phonenumbers-user-token', token)
     }
