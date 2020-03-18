@@ -1,11 +1,26 @@
 import React, { useState } from 'react'
 import { gql } from 'apollo-boost'
-import { useApolloClient, useQuery, useMutation } from '@apollo/react-hooks'
+import { useApolloClient, useQuery, useMutation, useSubscription } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Recommended from './components/Recommended'
 import Login from './components/Login'
+
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    id
+    title
+    published
+    author {
+      name
+      born
+      bookCount
+      id
+    }
+    genres
+  }
+`
 
 const ALL_AUTHORS = gql`
 {
@@ -33,20 +48,12 @@ const EDIT_AUTHOR = gql`
 `
 
 const ALL_BOOKS = gql`
-{
-  allBooks {
-    title
-    published
-    author {
-      name
-      born
-      bookCount
-      id
+  {
+    allBooks {
+      ...BookDetails
     }
-    genres
-    id
   }
-}
+  ${BOOK_DETAILS}
 `
 
 const CREATE_BOOK = gql`
@@ -57,18 +64,10 @@ const CREATE_BOOK = gql`
       author: $author,
       genres: $genres
     ) {
-      title
-      published
-      author {
-        name
-        born
-        bookCount
-        id
-      }
-      genres
-      id
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `
 
 const LOGIN = gql`
@@ -91,6 +90,27 @@ const USER = gql`
   }
 }
 `
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`
+
+const Notify = ({ errorMessage }) => {
+  if (!errorMessage) {
+    return null
+  }
+
+  return (
+    <div className='errorMsgStyle'>
+      {errorMessage}
+    </div>
+  )
+}
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -121,6 +141,13 @@ const App = () => {
     client.resetStore()
   }
 
+  const notify = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
+
   const client = useApolloClient()
 
   const authors = useQuery(ALL_AUTHORS)
@@ -129,13 +156,30 @@ const App = () => {
 
   const user = useQuery(USER)
 
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map(b => b.id).includes(object.id)
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) }
+      })
+    }
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      notify(`${addedBook.title} added`)
+      updateCacheWith(addedBook)
+    }
+  })
+
   return (
     <div>
-      {errorMessage &&
-        <div className='errorMsgStyle'>
-          {errorMessage}
-        </div>
-      }
+      <Notify errorMessage={errorMessage} />
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
